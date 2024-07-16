@@ -1,0 +1,13 @@
+server:
+  port: 8088
+
+db:
+  host: 127.0.0.1
+  user: root
+  password: "123456"
+  dbname: web_service
+  port: 43306
+  autoMigrate: true
+  timezone: "Asia/Shanghai"
+  logLevel: info
+  slowThreshold: "200ms"
