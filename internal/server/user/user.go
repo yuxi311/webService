@@ -9,6 +9,7 @@ import (
 
 	"github.com/yuxi311/webService/logic/user"
 	"github.com/yuxi311/webService/pkg/httpresponse"
+	"github.com/yuxi311/webService/pkg/utils"
 )
 
 type NewUserBody struct {
@@ -64,7 +65,7 @@ func getAllUsersHandler(c *gin.Context) {
 func getUserHandler(c *gin.Context) {
 	userId, err := strconv.Atoi(c.Param("userId"))
 	if err != nil {
-		httpresponse.Fail(c, err)
+		httpresponse.Fail(c, 10004, "tran userId failed")
 	}
 
 	userInfo := user.QueryUser(uint64(userId))
@@ -85,14 +86,14 @@ func getUserHandler(c *gin.Context) {
 
 func createUserHandler(c *gin.Context) {
 	req := NewUserBody{}
-
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if err := user.CreateNewUser(req.Name, req.Username, req.Password, req.Role); err != nil {
-		httpresponse.Fail(c, err)
+	hashedPassword := utils.EncodePassword(req.Password)
+	if err := user.CreateNewUser(req.Name, req.Username, hashedPassword, req.Role); err != nil {
+		httpresponse.Fail(c, 10006, "create new user failed")
 
 	}
 
@@ -102,7 +103,7 @@ func createUserHandler(c *gin.Context) {
 func deleteUserHandler(c *gin.Context) {
 	userId, err := strconv.Atoi(c.Param("userId"))
 	if err != nil {
-		httpresponse.Fail(c, err)
+		httpresponse.Fail(c, 10004, "tran userId failed")
 	}
 
 	user.DeleteUser(uint64(userId))
@@ -112,7 +113,7 @@ func deleteUserHandler(c *gin.Context) {
 func updateUserHandler(c *gin.Context) {
 	userId, err := strconv.Atoi(c.Param("userId"))
 	if err != nil {
-		httpresponse.Fail(c, err)
+		httpresponse.Fail(c, 10004, "tran userId failed")
 	}
 
 	req := UpdateUserBody{}
@@ -121,8 +122,9 @@ func updateUserHandler(c *gin.Context) {
 		return
 	}
 
-	if err := user.UpdateUser(uint64(userId), req.Username, req.Password, req.Role); err != nil {
-		httpresponse.Fail(c, err)
+	hashedPassword := utils.EncodePassword(req.Password)
+	if err := user.UpdateUser(uint64(userId), req.Username, hashedPassword, req.Role); err != nil {
+		httpresponse.Fail(c, 10003, "update user failed")
 	}
 
 	httpresponse.Succeed(c, nil)

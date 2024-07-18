@@ -1,10 +1,10 @@
 ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 export BUILD_PATH ?= $(ROOT_DIR)/_build
 
-VERSION := $(shell git describe --tags --always)
+# VERSION := $(shell git describe --tags --always)
 ARCH := $(shell go env GOARCH)
 OS := $(shell go env GOOS)
-export PACKAGE_NAME := webservice-$(VERSION)-$(OS)-$(ARCH)
+export PACKAGE_NAME := webservice-$(OS)-$(ARCH)
 
 .PHONY: build
 build: clean build_prepare

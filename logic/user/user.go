@@ -49,3 +49,12 @@ func UpdateUser(id uint64, name string, password string, role int32) error {
 	db.Model(&entity.User{}).Where("id = ?", id).Updates(entity.User{Name: name, Password: password, Role: role})
 	return nil
 }
+
+func QueryUserByUsername(username string) entity.User {
+	var user entity.User
+	db := dal.DB()
+
+	db.Where("username = ?", username).Find(&user)
+
+	return user
+}
