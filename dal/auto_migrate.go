@@ -3,11 +3,12 @@ package dal
 import (
 	"fmt"
 
+	"gorm.io/gorm"
+
 	"github.com/yuxi311/webService/model/entity"
 )
 
-func AutoMigrate() error {
-	db := DB()
+func AutoMigrate(db *gorm.DB) error {
 	models := []interface{}{
 		&entity.User{},
 	}

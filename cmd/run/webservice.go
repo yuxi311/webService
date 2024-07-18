@@ -7,8 +7,7 @@ import (
 
 	"github.com/yuxi311/webService/dal"
 	"github.com/yuxi311/webService/internal/config"
-	"github.com/yuxi311/webService/logic/user"
-	"github.com/yuxi311/webService/server"
+	"github.com/yuxi311/webService/internal/server"
 )
 
 func Run(configFile string) error {
@@ -24,24 +23,24 @@ func Run(configFile string) error {
 	//获取数据库连接对象
 	// mysql := dal.DB()
 
-	// 自动迁移模式
-	dal.AutoMigrate()
+	// // 自动迁移模式
+	// dal.AutoMigrate()
 
-	//创建记录
-	user.CreateNewUser("web4", "user4", "0000", 1)
+	// //创建记录
+	// user.CreateNewUser("web4", "user4", "0000", 1)
 
-	//查询数据库
-	queryUsers := user.QueryUsers()
-	fmt.Println("query users: ", queryUsers)
+	// //查询数据库
+	// queryUsers := user.QueryUsers()
+	// fmt.Println("query users: ", queryUsers)
 
-	queryUser := user.QueryUser(4)
-	fmt.Println("query user: ", queryUser)
+	// queryUser := user.QueryUser(4)
+	// fmt.Println("query user: ", queryUser)
 
-	//更新表中字段值
-	user.UpdateUser(4, "", "1111", 1)
+	// //更新表中字段值
+	// user.UpdateUser(4, "", "1111", 1)
 
-	//删除记录
-	user.DeleteUser(3)
+	// //删除记录
+	// user.DeleteUser(3)
 	// mysql.Where("name = ?", "web1").Delete(&entity.User{})
 
 	// listen port

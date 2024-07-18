@@ -20,6 +20,10 @@ func Init() error {
 		return fmt.Errorf("open db error, err = %v", err)
 	}
 
+	if err := AutoMigrate(db); err != nil {
+		return err
+	}
+
 	fmt.Println("connected database successful: ", db)
 	internal_db = db
 	return nil

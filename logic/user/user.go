@@ -1,9 +1,6 @@
 package user
 
 import (
-	// "strings"
-	// "gorm.io/gorm"
-
 	"github.com/yuxi311/webService/dal"
 	"github.com/yuxi311/webService/model/entity"
 )
@@ -30,7 +27,7 @@ func QueryUsers() []entity.User {
 	return users
 }
 
-func QueryUser(id int) entity.User {
+func QueryUser(id uint64) entity.User {
 	var user entity.User
 	db := dal.DB()
 
@@ -39,14 +36,14 @@ func QueryUser(id int) entity.User {
 	return user
 }
 
-func DeleteUser(id int) error {
+func DeleteUser(id uint64) error {
 	db := dal.DB()
 
 	db.Where("id = ?", id).Delete(&entity.User{})
 	return nil
 }
 
-func UpdateUser(id int, name string, password string, role int32) error {
+func UpdateUser(id uint64, name string, password string, role int32) error {
 	db := dal.DB()
 
 	db.Model(&entity.User{}).Where("id = ?", id).Updates(entity.User{Name: name, Password: password, Role: role})
