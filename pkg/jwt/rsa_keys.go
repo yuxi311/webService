@@ -20,6 +20,7 @@ import (
 	"sync"
 
 	"github.com/golang-jwt/jwt"
+	"github.com/yuxi311/webService/pkg/utils"
 )
 
 var (
@@ -28,18 +29,18 @@ var (
 
 const (
 	RSAPrivateKeyPath = "etc/webservice_key"
-	RSAPublicKeyPath = "etc/webservice_key.pub"
+	RSAPublicKeyPath  = "etc/webservice_key.pub"
 )
 
 func GetPrivateKey() (*rsa.PrivateKey, error) {
 	repositoryLock.Lock()
 	defer repositoryLock.Unlock()
 
-	keyBytes, err := os.ReadFile(RSAPrivateKeyPath)
+	keyBytes, err := os.ReadFile(utils.ToFilePath(RSAPrivateKeyPath))
 	if err != nil {
 		return nil, err
 	}
-	
+
 	signKey, err := jwt.ParseRSAPrivateKeyFromPEM(keyBytes)
 	if err != nil {
 		return nil, err
@@ -52,11 +53,11 @@ func GetPublicKey() (*rsa.PublicKey, error) {
 	repositoryLock.Lock()
 	defer repositoryLock.Unlock()
 
-	keyBytes, err := os.ReadFile(RSAPublicKeyPath)
+	keyBytes, err := os.ReadFile(utils.ToFilePath(RSAPublicKeyPath))
 	if err != nil {
 		return nil, err
 	}
-	
+
 	pubKey, err := jwt.ParseRSAPublicKeyFromPEM(keyBytes)
 	if err != nil {
 		return nil, err

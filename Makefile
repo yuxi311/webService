@@ -15,6 +15,9 @@ build: clean build_prepare
 .PHONY: build_prepare
 build_prepare:
 	@mkdir -p $(BUILD_PATH)/$(PACKAGE_NAME)/bin
+	@mkdir -p $(BUILD_PATH)/$(PACKAGE_NAME)/etc
+	@mkdir -p $(BUILD_PATH)/$(PACKAGE_NAME)/log
+	@cp -r etc/* $(BUILD_PATH)/$(PACKAGE_NAME)/etc
 
 .PHONY: clean
 clean:

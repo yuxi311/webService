@@ -2,6 +2,8 @@ package run
 
 import (
 	"github.com/spf13/cobra"
+
+	"github.com/yuxi311/webService/pkg/utils"
 )
 
 var flags = struct {
@@ -15,7 +17,7 @@ func NewCommand() *cobra.Command {
 		Use:   "run",
 		Short: "Run webService in console",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return Run(configFile)
+			return Run(utils.ToFilePath(configFile))
 		},
 	}
 	runCmd.Flags().IntVarP(&flags.port, "port", "p", 8080, "listening port")

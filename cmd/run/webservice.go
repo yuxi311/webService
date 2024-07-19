@@ -9,6 +9,7 @@ import (
 	"github.com/yuxi311/webService/internal/config"
 	"github.com/yuxi311/webService/internal/server"
 	"github.com/yuxi311/webService/pkg/logger"
+	"github.com/yuxi311/webService/pkg/utils"
 )
 
 func Run(configFile string) error {
@@ -25,7 +26,7 @@ func Run(configFile string) error {
 	loggerOptions := logger.Options{
 		Mode:       config.Log().Mode,
 		Level:      config.Log().Level,
-		Path:       config.Log().File,
+		Path:       utils.ToFilePath(config.Log().File),
 		Format:     config.Log().Format,
 		MaxSize:    config.Log().MaxSize,
 		MaxBackups: config.Log().MaxBackups,
