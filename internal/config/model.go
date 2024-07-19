@@ -3,6 +3,7 @@ package config
 type Config struct {
 	Server ServerConfig `yaml:"server"`
 	DB     DBConfig     `yaml:"db"`
+	Log    LogConfig    `yaml:"log"`
 }
 
 type ServerConfig struct {
@@ -19,4 +20,14 @@ type DBConfig struct {
 	Timezone    string `yaml:"timezone"`
 	LogLevel    string `yaml:"logLevel"`
 	// SlowThreshold marshaltype.Duration `yaml:"slowThreshold"`
+}
+
+type LogConfig struct {
+	Mode       string `yaml:"mode"`
+	Format     string `yaml:"format"`
+	File       string `yaml:"file"`
+	Level      string `yaml:"level"`
+	MaxSize    int    `yaml:"maxSize"`
+	MaxAge     int    `yaml:"maxAge"`
+	MaxBackups int    `yaml:"maxBackups"`
 }

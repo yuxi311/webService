@@ -11,3 +11,12 @@ db:
   timezone: "Asia/Shanghai"
   logLevel: info
   slowThreshold: "200ms"
+
+log:
+  mode: file
+  format: txt
+  file: log/webservice.log
+  level: info
+  maxSize: 10
+  maxAge: 7
+  maxBackups: 3

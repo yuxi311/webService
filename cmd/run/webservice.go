@@ -8,6 +8,7 @@ import (
 	"github.com/yuxi311/webService/dal"
 	"github.com/yuxi311/webService/internal/config"
 	"github.com/yuxi311/webService/internal/server"
+	"github.com/yuxi311/webService/pkg/logger"
 )
 
 func Run(configFile string) error {
@@ -20,8 +21,22 @@ func Run(configFile string) error {
 		return err
 	}
 
+	//logger init
+	loggerOptions := logger.Options{
+		Mode:       config.Log().Mode,
+		Level:      config.Log().Level,
+		Path:       config.Log().File,
+		Format:     config.Log().Format,
+		MaxSize:    config.Log().MaxSize,
+		MaxBackups: config.Log().MaxBackups,
+	}
+	if err := logger.Initialize(loggerOptions); err != nil {
+		return errors.Wrap(err, "logger.init")
+	}
+
 	// listen port
 	port := config.Server().Port
+	logger.Info("Start listen port")
 	fmt.Printf("Start listen port: %v\n", port)
 	server.Serve(port)
 	return nil

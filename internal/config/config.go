@@ -15,11 +15,7 @@ func Load(configFile string) error {
 		return err
 	}
 
-	cfg := Config{
-		Server: ServerConfig{
-			Port: 8087,
-		},
-	}
+	cfg := Config{}
 
 	// read config file webserver.yaml
 	bytes, err := os.ReadFile(configFile)
@@ -46,4 +42,8 @@ func Server() ServerConfig {
 
 func DB() DBConfig {
 	return internal_config.DB
+}
+
+func Log() LogConfig {
+	return internal_config.Log
 }
