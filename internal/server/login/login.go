@@ -5,13 +5,18 @@ import (
 
 	"github.com/yuxi311/webService/logic/user"
 	"github.com/yuxi311/webService/pkg/httpresponse"
+	"github.com/yuxi311/webService/pkg/jwt"
 	"github.com/yuxi311/webService/pkg/utils"
 )
 
 type LoginBody struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
-	Role     int32  `json:"role"`
+}
+
+type LoginRespBody struct {
+	Token string `json:"token"`
+	Role  int32  `json:"role"`
 }
 
 func loginHandler(c *gin.Context) {
@@ -35,5 +40,16 @@ func loginHandler(c *gin.Context) {
 		return
 	}
 
-	httpresponse.Succeed(c, nil)
+	token, err := jwt.CreateToken(user.Username, user.Role)
+	if err != nil {
+		httpresponse.Fail(c, 10008, err.Error())
+		return
+	}
+
+	resp := LoginRespBody{
+		Token: token,
+		Role:  user.Role,
+	}
+
+	httpresponse.Succeed(c, resp)
 }

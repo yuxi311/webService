@@ -1,7 +1,6 @@
 package user
 
 import (
-	"net/http"
 	"strconv"
 	"time"
 
@@ -66,6 +65,7 @@ func getUserHandler(c *gin.Context) {
 	userId, err := strconv.Atoi(c.Param("userId"))
 	if err != nil {
 		httpresponse.Fail(c, 10004, "tran userId failed")
+		return
 	}
 
 	userInfo := user.QueryUser(uint64(userId))
@@ -87,14 +87,14 @@ func getUserHandler(c *gin.Context) {
 func createUserHandler(c *gin.Context) {
 	req := NewUserBody{}
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		httpresponse.Fail(c, 10010, err.Error())
 		return
 	}
 
 	hashedPassword := utils.EncodePassword(req.Password)
 	if err := user.CreateNewUser(req.Name, req.Username, hashedPassword, req.Role); err != nil {
 		httpresponse.Fail(c, 10006, "create new user failed")
-
+		return
 	}
 
 	httpresponse.Succeed(c, nil)
@@ -104,6 +104,7 @@ func deleteUserHandler(c *gin.Context) {
 	userId, err := strconv.Atoi(c.Param("userId"))
 	if err != nil {
 		httpresponse.Fail(c, 10004, "tran userId failed")
+		return
 	}
 
 	user.DeleteUser(uint64(userId))
@@ -114,17 +115,19 @@ func updateUserHandler(c *gin.Context) {
 	userId, err := strconv.Atoi(c.Param("userId"))
 	if err != nil {
 		httpresponse.Fail(c, 10004, "tran userId failed")
+		return
 	}
 
 	req := UpdateUserBody{}
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		httpresponse.Fail(c, 10011, err.Error())
 		return
 	}
 
 	hashedPassword := utils.EncodePassword(req.Password)
 	if err := user.UpdateUser(uint64(userId), req.Username, hashedPassword, req.Role); err != nil {
 		httpresponse.Fail(c, 10003, "update user failed")
+		return
 	}
 
 	httpresponse.Succeed(c, nil)
