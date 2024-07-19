@@ -23,23 +23,44 @@ import (
 )
 
 var (
-	repositoryLock       sync.Mutex
+	repositoryLock sync.Mutex
 )
 
-const RSAKeyPath = "etc/webservice_key"
+const (
+	RSAPrivateKeyPath = "etc/webservice_key"
+	RSAPublicKeyPath = "etc/webservice_key.pub"
+)
 
 func GetPrivateKey() (*rsa.PrivateKey, error) {
 	repositoryLock.Lock()
 	defer repositoryLock.Unlock()
 
-	keyBytes, err := os.ReadFile(RSAKeyPath)
+	keyBytes, err := os.ReadFile(RSAPrivateKeyPath)
 	if err != nil {
 		return nil, err
 	}
+	
 	signKey, err := jwt.ParseRSAPrivateKeyFromPEM(keyBytes)
 	if err != nil {
 		return nil, err
 	}
 
 	return signKey, nil
+}
+
+func GetPublicKey() (*rsa.PublicKey, error) {
+	repositoryLock.Lock()
+	defer repositoryLock.Unlock()
+
+	keyBytes, err := os.ReadFile(RSAPublicKeyPath)
+	if err != nil {
+		return nil, err
+	}
+	
+	pubKey, err := jwt.ParseRSAPublicKeyFromPEM(keyBytes)
+	if err != nil {
+		return nil, err
+	}
+
+	return pubKey, nil
 }

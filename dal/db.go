@@ -24,7 +24,7 @@ func Init() error {
 		return err
 	}
 
-	fmt.Println("connected database successful: ", db)
+	fmt.Println("Connected database successful")
 	internal_db = db
 	return nil
 }

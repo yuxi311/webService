@@ -9,6 +9,7 @@ import (
 
 func Serve(port int) {
 	gr := gin.New()
+	setupNoAuthRoutes(gr)
 	setupRoutes(gr)
 
 	server := &http.Server{
