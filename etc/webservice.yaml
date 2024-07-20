@@ -20,3 +20,8 @@ log:
   maxSize: 10
   maxAge: 7
   maxBackups: 3
+
+redis:
+  server: "127.0.0.1:6379"
+  password: ""
+  db: 0

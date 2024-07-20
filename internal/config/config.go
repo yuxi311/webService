@@ -47,3 +47,7 @@ func DB() DBConfig {
 func Log() LogConfig {
 	return internal_config.Log
 }
+
+func Redis() RedisConfig {
+	return internal_config.Redis
+}

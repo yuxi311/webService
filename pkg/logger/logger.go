@@ -21,8 +21,7 @@ type MillisecondsFormatter struct {
 	logrus.Formatter
 }
 
-// Initialize will initialize logger instance
-func Initialize(opts Options) error {
+func Init(opts Options) error {
 	level, err := logrus.ParseLevel(opts.Level)
 	if err != nil {
 		return err

@@ -17,8 +17,13 @@ func Run(configFile string) error {
 		return errors.Wrap(err, "config.load")
 	}
 
-	//数据库的连接
+	//db init
 	if err := dal.Init(); err != nil {
+		return err
+	}
+
+	// redis db init
+	if err := dal.InitRedis(); err != nil {
 		return err
 	}
 
@@ -31,7 +36,7 @@ func Run(configFile string) error {
 		MaxSize:    config.Log().MaxSize,
 		MaxBackups: config.Log().MaxBackups,
 	}
-	if err := logger.Initialize(loggerOptions); err != nil {
+	if err := logger.Init(loggerOptions); err != nil {
 		return errors.Wrap(err, "logger.init")
 	}
 

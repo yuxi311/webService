@@ -4,6 +4,7 @@ type Config struct {
 	Server ServerConfig `yaml:"server"`
 	DB     DBConfig     `yaml:"db"`
 	Log    LogConfig    `yaml:"log"`
+	Redis  RedisConfig  `yaml:"redis"`
 }
 
 type ServerConfig struct {
@@ -30,4 +31,10 @@ type LogConfig struct {
 	MaxSize    int    `yaml:"maxSize"`
 	MaxAge     int    `yaml:"maxAge"`
 	MaxBackups int    `yaml:"maxBackups"`
+}
+
+type RedisConfig struct {
+	Server   string `yaml:"server"`
+	Password string `yaml:"password"`
+	DB       int    `yaml:"db"`
 }
