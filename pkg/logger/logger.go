@@ -2,7 +2,6 @@ package logger
 
 import (
 	"os"
-	"strings"
 	"time"
 
 	"github.com/natefinch/lumberjack"
@@ -24,11 +23,12 @@ type MillisecondsFormatter struct {
 
 // Initialize will initialize logger instance
 func Initialize(opts Options) error {
-	level, err := logrus.ParseLevel(mappingLogLevel(opts.Level))
+	level, err := logrus.ParseLevel(opts.Level)
 	if err != nil {
 		return err
 	}
 	logrus.SetLevel(level)
+
 	if opts.Format == "json" {
 		logrus.SetFormatter(&logrus.JSONFormatter{})
 	} else {
@@ -84,14 +84,4 @@ func Error(args ...interface{}) {
 
 func Errorf(format string, args ...interface{}) {
 	logrus.Errorf(format, args...)
-}
-
-func mappingLogLevel(levelStr string) string {
-	level := strings.ToLower(levelStr)
-	switch level {
-	case "notice":
-		return "warn"
-	default:
-		return level
-	}
 }
