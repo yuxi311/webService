@@ -57,8 +57,15 @@ func QueryUser(id uint64) entity.User {
 
 func DeleteUser(id uint64) error {
 	db := dal.DB()
-
 	db.Where("id = ?", id).Delete(&entity.User{})
+
+	ctx := context.Background()
+	rdb := dal.RDB()
+	idString := strconv.Itoa(int(id))
+	err := rdb.Del(ctx, idString).Err()
+	if err != nil {
+		logger.Errorf("delete redis error: %v", err)
+	}
 	return nil
 }
 
