@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/yuxi311/webService/cmd/run"
+	"github.com/yuxi311/webService/cmd/start"
 )
 
 func Execute() {
@@ -18,6 +19,7 @@ func Execute() {
 	}
 
 	rootCmd.AddCommand(run.NewCommand())
+	rootCmd.AddCommand(start.NewCommand())
 
 	err := rootCmd.Execute()
 	if err != nil {
