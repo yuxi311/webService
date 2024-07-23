@@ -1,6 +1,9 @@
 package login
 
 import (
+	"encoding/json"
+	"time"
+
 	"github.com/gin-gonic/gin"
 
 	"github.com/yuxi311/webService/logic/user"
@@ -18,6 +21,12 @@ type LoginBody struct {
 type LoginRespBody struct {
 	Token string `json:"token"`
 	Role  int32  `json:"role"`
+}
+
+type LoginMessage struct {
+	ConnectedAt time.Time `json:"connected_at"`
+	Username    string    `json:"username"`
+	Status      int       `json:"status"`
 }
 
 func loginHandler(c *gin.Context) {
@@ -47,7 +56,17 @@ func loginHandler(c *gin.Context) {
 		return
 	}
 
-	err = kafka.ProduceMessage([]byte("login successfull"))
+	msg := LoginMessage{
+		ConnectedAt: time.Now(),
+		Username:    req.Username,
+		Status:      1,
+	}
+	msgData, err := json.Marshal(msg)
+	if err != nil {
+		httpresponse.Fail(c, 10018, err.Error())
+		return
+	}
+	err = kafka.ProduceMessage(msgData)
 	if err != nil {
 		httpresponse.Fail(c, 10015, err.Error())
 		return

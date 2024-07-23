@@ -18,17 +18,17 @@ func Run(configFile string) error {
 		return errors.Wrap(err, "config.load")
 	}
 
-	//db init
+	//init db
 	if err := dal.Init(); err != nil {
 		return err
 	}
 
-	// redis db init
+	//init redis db
 	if err := dal.InitRedis(); err != nil {
 		return err
 	}
 
-	//logger init
+	//init logger
 	loggerOptions := logger.Options{
 		Mode:       config.Log().Mode,
 		Level:      config.Log().Level,
