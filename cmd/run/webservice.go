@@ -46,6 +46,8 @@ func Run(configFile string) error {
 		return err
 	}
 
+	go kafka.ConsumeMessage()
+
 	// listen port
 	port := config.Server().Port
 	logger.Info("Start listen port")
