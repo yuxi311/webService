@@ -6,6 +6,7 @@ import (
 	"github.com/yuxi311/webService/logic/user"
 	"github.com/yuxi311/webService/pkg/httpresponse"
 	"github.com/yuxi311/webService/pkg/jwt"
+	"github.com/yuxi311/webService/pkg/kafka"
 	"github.com/yuxi311/webService/pkg/utils"
 )
 
@@ -43,6 +44,12 @@ func loginHandler(c *gin.Context) {
 	token, err := jwt.CreateToken(user.Username, user.Role)
 	if err != nil {
 		httpresponse.Fail(c, 10008, err.Error())
+		return
+	}
+
+	err = kafka.ProduceMessage([]byte("login successfull"))
+	if err != nil {
+		httpresponse.Fail(c, 10015, err.Error())
 		return
 	}
 

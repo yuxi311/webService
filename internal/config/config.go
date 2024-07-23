@@ -51,3 +51,7 @@ func Log() LogConfig {
 func Redis() RedisConfig {
 	return internal_config.Redis
 }
+
+func Kafka() KafkaConfig {
+	return internal_config.Kafka
+}

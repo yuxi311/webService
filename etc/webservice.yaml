@@ -22,6 +22,10 @@ log:
   maxBackups: 3
 
 redis:
-  server: "127.0.0.1:6379"
+  server: 127.0.0.1:6379
   password: ""
   db: 0
+
+kafka:
+  brokers: 127.0.0.1:9092
+  loginLogTopic: test1

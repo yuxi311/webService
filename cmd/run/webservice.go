@@ -8,6 +8,7 @@ import (
 	"github.com/yuxi311/webService/dal"
 	"github.com/yuxi311/webService/internal/config"
 	"github.com/yuxi311/webService/internal/server"
+	"github.com/yuxi311/webService/pkg/kafka"
 	"github.com/yuxi311/webService/pkg/logger"
 	"github.com/yuxi311/webService/pkg/utils"
 )
@@ -38,6 +39,11 @@ func Run(configFile string) error {
 	}
 	if err := logger.Init(loggerOptions); err != nil {
 		return errors.Wrap(err, "logger.init")
+	}
+
+	//init kafka
+	if err := kafka.Init(); err != nil {
+		return err
 	}
 
 	// listen port

@@ -5,6 +5,7 @@ type Config struct {
 	DB     DBConfig     `yaml:"db"`
 	Log    LogConfig    `yaml:"log"`
 	Redis  RedisConfig  `yaml:"redis"`
+	Kafka  KafkaConfig  `yaml:"kafka"`
 }
 
 type ServerConfig struct {
@@ -37,4 +38,9 @@ type RedisConfig struct {
 	Server   string `yaml:"server"`
 	Password string `yaml:"password"`
 	DB       int    `yaml:"db"`
+}
+
+type KafkaConfig struct {
+	Brokers       string `yaml:"brokers"`
+	LoginLogTopic string `yaml:"loginLogTopic"`
 }
