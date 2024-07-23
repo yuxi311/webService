@@ -56,21 +56,15 @@ func loginHandler(c *gin.Context) {
 		return
 	}
 
-	msg := LoginMessage{
-		ConnectedAt: time.Now(),
-		Username:    req.Username,
-		Status:      1,
-	}
-	msgData, err := json.Marshal(msg)
-	if err != nil {
-		httpresponse.Fail(c, 10018, err.Error())
-		return
-	}
-	err = kafka.ProduceMessage(msgData)
-	if err != nil {
-		httpresponse.Fail(c, 10015, err.Error())
-		return
-	}
+	go func() {
+		msg := LoginMessage{
+			ConnectedAt: time.Now(),
+			Username:    req.Username,
+			Status:      1,
+		}
+		msgData, _ := json.Marshal(msg)
+		_ = kafka.ProduceMessage(msgData)
+	}()
 
 	resp := LoginRespBody{
 		Token: token,
