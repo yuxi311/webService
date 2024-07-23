@@ -1,30 +1,25 @@
 package kafka
 
 import (
-	"context"
-
 	"github.com/segmentio/kafka-go"
 	"github.com/yuxi311/webService/internal/config"
-	"github.com/yuxi311/webService/pkg/logger"
 )
 
-var internal_kafka *kafka.Conn
+var internal_kafka *kafka.Writer
 
 func Init() error {
 	cfg := config.Kafka()
-	ctx := context.Background()
-	network := "tcp"
-	partition := 0
 
-	conn, err := kafka.DialLeader(ctx, network, cfg.Brokers, cfg.LoginLogTopic, partition)
-	if err != nil {
-		logger.Errorf("failed to dial leader, error: %v", err)
-		return err
+	w := &kafka.Writer{
+		Addr:     kafka.TCP(cfg.Brokers),
+		Topic:    cfg.LoginLogTopic,
+		Balancer: &kafka.LeastBytes{},
 	}
-	internal_kafka = conn
+
+	internal_kafka = w
 	return nil
 }
 
-func KafkaConn() *kafka.Conn {
+func KafkaWriter() *kafka.Writer {
 	return internal_kafka
 }
