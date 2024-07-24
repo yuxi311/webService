@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"github.com/yuxi311/webService/internal/config"
 	"github.com/yuxi311/webService/logic/user"
 	"github.com/yuxi311/webService/pkg/httpresponse"
 	"github.com/yuxi311/webService/pkg/jwt"
@@ -57,29 +58,17 @@ func loginHandler(c *gin.Context) {
 		return
 	}
 
-	go func() {
-		msg := LoginMessage{
-			ConnectedAt: time.Now(),
-			Username:    req.Username,
-			Status:      1,
-		}
-		msgData, _ := json.Marshal(msg)
-		_ = kafka.ProduceMessage(msgData)
-	}()
+	msg := LoginMessage{
+		ConnectedAt: time.Now(),
+		Username:    req.Username,
+		Status:      1,
+	}
+	msgData, _ := json.Marshal(msg)
 
-	go func() {
-		msg := LoginMessage{
-			ConnectedAt: time.Now(),
-			Username:    req.Username,
-			Status:      1,
-		}
-		msgData, _ := json.Marshal(msg)
-		_ = mqtt.Pub(msgData)
-	}()
+	go kafka.ProduceMessage(msgData)
 
-	go func() {
-		_ = mqtt.Sub()
-	}()
+	mqttCfg := config.MQTT()
+	go mqtt.Pub(mqttCfg.Topic, 0, msgData)
 
 	resp := LoginRespBody{
 		Token: token,

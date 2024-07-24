@@ -2,19 +2,16 @@ package mqtt
 
 import (
 	"fmt"
-
-	"github.com/yuxi311/webService/internal/config"
 )
 
-func Sub() error {
-	cfg := config.MQTT()
+func Sub(topic string, qos byte) error {
 	client := MQTTClient()
 
-	token := client.Subscribe(cfg.Topic, 0, messagePubHandler)
+	token := client.Subscribe(topic, qos, messagePubHandler)
 	token.Wait()
 
 	if token.Wait() && token.Error() != nil {
-		return fmt.Errorf("sub token to topic= %v error, err = %v", cfg.Topic, token.Error())
+		return fmt.Errorf("sub token to topic= %v error, err = %v", topic, token.Error())
 	}
 
 	return nil

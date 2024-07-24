@@ -1,24 +1,23 @@
 package mqtt
 
 import (
-	"fmt"
-
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/yuxi311/webService/internal/config"
+	"github.com/yuxi311/webService/pkg/logger"
 )
 
 var internal_mqtt_client mqtt.Client
 
 var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
-	fmt.Printf("Received message: %s from topic: %s\n", msg.Payload(), msg.Topic())
+	logger.Infof("Received message: %s from topic: %s\n", msg.Payload(), msg.Topic())
 }
 
 var connectHandler mqtt.OnConnectHandler = func(client mqtt.Client) {
-	fmt.Println("Connected MQTT")
+	logger.Info("Connected MQTT")
 }
 
 var connectLostHandler mqtt.ConnectionLostHandler = func(client mqtt.Client, err error) {
-	fmt.Printf("Connect lost: %v", err)
+	logger.Infof("Connect lost: %v", err)
 }
 
 func Init() error {

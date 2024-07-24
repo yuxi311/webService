@@ -54,6 +54,9 @@ func Run(configFile string) error {
 		return err
 	}
 
+	mqttCfg := config.MQTT()
+	go mqtt.Sub(mqttCfg.Topic, 0)
+
 	// listen port
 	port := config.Server().Port
 	logger.Info("Start listen port")

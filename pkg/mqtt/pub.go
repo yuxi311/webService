@@ -2,15 +2,12 @@ package mqtt
 
 import (
 	"fmt"
-
-	"github.com/yuxi311/webService/internal/config"
 )
 
-func Pub(msg []byte) error {
-	cfg := config.MQTT()
+func Pub(topic string, qos byte, msg []byte) error {
 	client := MQTTClient()
 
-	token := client.Publish(cfg.Topic, 0, false, msg)
+	token := client.Publish(topic, qos, false, msg)
 	token.Wait()
 	if token.Wait() && token.Error() != nil {
 		return fmt.Errorf("pub token error, err = %v", token.Error())
