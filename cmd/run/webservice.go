@@ -10,6 +10,7 @@ import (
 	"github.com/yuxi311/webService/internal/server"
 	"github.com/yuxi311/webService/pkg/kafka"
 	"github.com/yuxi311/webService/pkg/logger"
+	"github.com/yuxi311/webService/pkg/mqtt"
 	"github.com/yuxi311/webService/pkg/utils"
 )
 
@@ -47,6 +48,11 @@ func Run(configFile string) error {
 	}
 
 	go kafka.ConsumeMessage()
+
+	//init mqtt
+	if err := mqtt.Init(); err != nil {
+		return err
+	}
 
 	// listen port
 	port := config.Server().Port

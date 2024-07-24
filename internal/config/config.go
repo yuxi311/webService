@@ -55,3 +55,7 @@ func Redis() RedisConfig {
 func Kafka() KafkaConfig {
 	return internal_config.Kafka
 }
+
+func MQTT() MQTTConfig {
+	return internal_config.MQTT
+}

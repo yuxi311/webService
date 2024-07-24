@@ -1,5 +1,5 @@
 server:
-  port: 8088
+  port: 8090
 
 db:
   host: 127.0.0.1
@@ -29,3 +29,10 @@ redis:
 kafka:
   brokers: 127.0.0.1:9092
   loginLogTopic: test1
+
+mqtt:
+  server: mqtt://192.168.10.170:1883
+  clientId: webservice_123456a
+  username: ""
+  password: ""
+  topic: /webservice

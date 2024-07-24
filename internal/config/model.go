@@ -6,6 +6,7 @@ type Config struct {
 	Log    LogConfig    `yaml:"log"`
 	Redis  RedisConfig  `yaml:"redis"`
 	Kafka  KafkaConfig  `yaml:"kafka"`
+	MQTT   MQTTConfig   `yaml:"mqtt"`
 }
 
 type ServerConfig struct {
@@ -43,4 +44,12 @@ type RedisConfig struct {
 type KafkaConfig struct {
 	Brokers       string `yaml:"brokers"`
 	LoginLogTopic string `yaml:"loginLogTopic"`
+}
+
+type MQTTConfig struct {
+	Server   string `yaml:"server"`
+	ClientId string `yaml:"clientId"`
+	Username string `yaml:"username"`
+	Password string `yaml:"password"`
+	Topic    string `yaml:"topic"`
 }

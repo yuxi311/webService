@@ -10,6 +10,7 @@ import (
 	"github.com/yuxi311/webService/pkg/httpresponse"
 	"github.com/yuxi311/webService/pkg/jwt"
 	"github.com/yuxi311/webService/pkg/kafka"
+	"github.com/yuxi311/webService/pkg/mqtt"
 	"github.com/yuxi311/webService/pkg/utils"
 )
 
@@ -64,6 +65,20 @@ func loginHandler(c *gin.Context) {
 		}
 		msgData, _ := json.Marshal(msg)
 		_ = kafka.ProduceMessage(msgData)
+	}()
+
+	go func() {
+		msg := LoginMessage{
+			ConnectedAt: time.Now(),
+			Username:    req.Username,
+			Status:      1,
+		}
+		msgData, _ := json.Marshal(msg)
+		_ = mqtt.Pub(msgData)
+	}()
+
+	go func() {
+		_ = mqtt.Sub()
 	}()
 
 	resp := LoginRespBody{
