@@ -6,6 +6,9 @@ import (
 
 	"github.com/natefinch/lumberjack"
 	"github.com/sirupsen/logrus"
+
+	"github.com/yuxi311/webService/internal/config"
+	"github.com/yuxi311/webService/pkg/utils"
 )
 
 type Options struct {
@@ -21,7 +24,17 @@ type MillisecondsFormatter struct {
 	logrus.Formatter
 }
 
-func Init(opts Options) error {
+func Init() error {
+	cfg := config.Log()
+	opts := Options{
+		Mode:       cfg.Mode,
+		Level:      cfg.Level,
+		Path:       utils.ToFilePath(cfg.File),
+		Format:     cfg.Format,
+		MaxSize:    cfg.MaxSize,
+		MaxBackups: cfg.MaxBackups,
+	}
+
 	level, err := logrus.ParseLevel(opts.Level)
 	if err != nil {
 		return err

@@ -11,7 +11,6 @@ import (
 	"github.com/yuxi311/webService/pkg/kafka"
 	"github.com/yuxi311/webService/pkg/logger"
 	"github.com/yuxi311/webService/pkg/mqtt"
-	"github.com/yuxi311/webService/pkg/utils"
 )
 
 func Run(configFile string) error {
@@ -30,15 +29,7 @@ func Run(configFile string) error {
 	}
 
 	//init logger
-	loggerOptions := logger.Options{
-		Mode:       config.Log().Mode,
-		Level:      config.Log().Level,
-		Path:       utils.ToFilePath(config.Log().File),
-		Format:     config.Log().Format,
-		MaxSize:    config.Log().MaxSize,
-		MaxBackups: config.Log().MaxBackups,
-	}
-	if err := logger.Init(loggerOptions); err != nil {
+	if err := logger.Init(); err != nil {
 		return errors.Wrap(err, "logger.init")
 	}
 
