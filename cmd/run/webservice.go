@@ -18,6 +18,11 @@ func Run(configFile string) error {
 		return errors.Wrap(err, "config.load")
 	}
 
+	//init logger
+	if err := logger.Init(); err != nil {
+		return errors.Wrap(err, "logger.init")
+	}
+	
 	//init db
 	if err := dal.Init(); err != nil {
 		return err
@@ -25,28 +30,23 @@ func Run(configFile string) error {
 
 	//init redis db
 	if err := dal.InitRedis(); err != nil {
-		return err
-	}
-
-	//init logger
-	if err := logger.Init(); err != nil {
-		return errors.Wrap(err, "logger.init")
+		logger.Errorf("init redis failed, error: %v", err.Error())
 	}
 
 	//init kafka
 	if err := kafka.Init(); err != nil {
-		return err
+		logger.Errorf("init kafka failed, error: %v", err.Error())
+	} else {
+		go kafka.ConsumeMessage()
 	}
-
-	go kafka.ConsumeMessage()
 
 	//init mqtt
 	if err := mqtt.Init(); err != nil {
-		return err
+		logger.Errorf("init mqtt failed, error: %v", err.Error())
+	} else {
+		mqttCfg := config.MQTT()
+		go mqtt.Sub(mqttCfg.Topic, 0)
 	}
-
-	mqttCfg := config.MQTT()
-	go mqtt.Sub(mqttCfg.Topic, 0)
 
 	// listen port
 	port := config.Server().Port
