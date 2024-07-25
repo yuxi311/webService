@@ -2,6 +2,7 @@ package login
 
 import (
 	"encoding/json"
+	"fmt"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -74,6 +75,7 @@ func loginHandler(c *gin.Context) {
 		Token: token,
 		Role:  user.Role,
 	}
-
+	
+	fmt.Println("login successful")
 	httpresponse.Succeed(c, resp)
 }
