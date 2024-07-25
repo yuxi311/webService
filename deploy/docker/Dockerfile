@@ -1,4 +1,3 @@
-ARG GO_VERSION=1.20.2
 FROM ubuntu:20.04
 
 COPY . /go/webservice
