@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  db:
+    image: mysql
+    environment:
+      MYSQL_DATABASE: web_service
+      MYSQL_ROOT_PASSWORD: "123456"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "43306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    image: web_service:latest
+    volumes:
+      - /Users/liyuxi/Program/webService/etc/webservice.yaml:/opt/webservice/etc/webservice.yaml
+    ports:
+      - "8088:8088"
+    depends_on:
+      db:
+        condition: service_healthy
